@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JComponent;
+import java.awt.image.BufferedImage;
 
 import core.game.Game;
 import core.player.AbstractPlayer;
@@ -60,8 +61,25 @@ public class VGDLViewer extends JComponent
      */
     public void paintComponent(Graphics gx)
     {
+
         Graphics2D g = (Graphics2D) gx;
 
+        int width = (int)this.getWidth();
+        int height = (int)this.getHeight();
+
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D img2d = img.createGraphics();
+
+        //paint twice, once to image
+        paintToGraphics(g);
+        paintToGraphics(img2d);
+        img2d.dispose();
+
+        player.screenShot(img, width, height);
+    }
+
+    public void paintToGraphics(Graphics2D g)
+    {
         //For a better graphics, enable this: (be aware this could bring performance issues depending on your HW & OS).
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
