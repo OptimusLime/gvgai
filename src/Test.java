@@ -1,6 +1,8 @@
 import java.util.Random;
 
 import core.ArcadeMachine;
+import java.io.*;
+import java.net.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,9 +14,34 @@ import core.ArcadeMachine;
 public class Test
 {
 
+
+   
     public static void main(String[] args)
     {
+
+        // try {
+
+        //     String sentence;
+        //     String modifiedSentence;
+        //     BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+
+        //     Socket clientSocket = new Socket("localhost", 48674);
+        //     DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        //     BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        //     sentence = inFromUser.readLine();
+        //     outToServer.writeBytes(sentence + '\n');
+        //     modifiedSentence = inFromServer.readLine();
+        //     System.out.println(modifiedSentence);
+        //     clientSocket.close();
+        // }
+        // catch(Exception e)
+        // {
+
+        // }
+
         //Available controllers:
+        String sampleSocketController = "controllers.samplesocket.Agent";
     	String sampleRandomController = "controllers.sampleRandom.Agent";
         String sampleOneStepController = "controllers.sampleonesteplookahead.Agent";
         String sampleMCTSController = "controllers.sampleMCTS.Agent";
@@ -65,7 +92,7 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 0;
+        int gameIdx = Math.abs(new Random().nextInt()) % games.length;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
@@ -73,10 +100,11 @@ public class Test
         String recordLevelFile = generateLevelPath +"geneticLevelGenerator/" + games[gameIdx] + "_lvl0.txt";
 
         // 1. This starts a game, in a level, played by a human.
-        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        // ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
+        ArcadeMachine.runOneGame(game, level1, visuals, sampleSocketController, recordActionsFile, seed);
+        // ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
         //ArcadeMachine.runOneGame(game, level1, visuals, tester, recordActionsFile, seed);
 
         // 3. This replays a game from an action file previously recorded
